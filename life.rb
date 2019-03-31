@@ -24,7 +24,7 @@ class Life
       population.each(&:next_tik)
       LiteCable.broadcast(::Game::Channel::NAME, message: cartesian)
 
-      sleep 0.5
+      sleep 0.2
       print '.'
     end
   end
