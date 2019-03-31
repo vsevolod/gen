@@ -42,6 +42,7 @@ class Land
       return
     when Food
       mite.info.grow_up(-1 * area[x, y].lives)
+      mite.info.foods += 1
     end
 
     self[mite.x, mite.y] = nil

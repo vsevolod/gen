@@ -15,6 +15,16 @@ class Population
     array.map(&block)
   end
 
+  def top_mite(except: nil)
+    max_foods = array.map{|m| m.info.foods }.max
+
+    array.select do |mite|
+      next false if except == mite
+
+      mite.info.foods == max_foods
+    end.sample
+  end
+
   private
 
   def culture(amount)

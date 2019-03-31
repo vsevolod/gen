@@ -21,7 +21,13 @@ class Life
   def call
     10000.times do
       check_food
-      population.each(&:next_tik)
+      population.each do |mite|
+        if mite.alive?
+          mite.next_tik
+        else
+          mite.reseed_with(population.top_mite(except: mite))
+        end
+      end
       LiteCable.broadcast(::Game::Channel::NAME, message: cartesian)
 
       sleep 0.2
