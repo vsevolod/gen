@@ -47,6 +47,7 @@ function buildTik(data) {
     .append("circle")
     .attr("cx", (d) => scale(d.x))
     .attr("cy", (d) => scale(d.y))
+    .attr("fill", (d) => d3.interpolateYlGn(d.age) / 100)
     .attr("r", 5)
 
   circle

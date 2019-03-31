@@ -3,6 +3,8 @@ require 'matrix'
 require 'numo/narray'
 
 require_relative 'config/environment.rb'
+require_relative 'mites/info'
+require_relative 'mite'
 require_relative 'population'
 require_relative 'land'
 
@@ -15,15 +17,21 @@ class Life
   end
 
   def call
-    LiteCable.broadcast ::Game::Channel::NAME, message: cartesian
+    100.times do
+      population.each(&:next_tik)
+      LiteCable.broadcast(::Game::Channel::NAME, message: cartesian)
+
+      sleep 0.5
+      print '.'
+    end
   end
 
   def cartesian
-    result = population.map do |info|
+    result = population.map do |mite|
       {
-        x: info.x,
-        y: info.y,
-        age: info.individ.age
+        x: mite.x,
+        y: mite.y,
+        age: mite.info.age
       }
     end
 

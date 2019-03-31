@@ -1,13 +1,14 @@
-require_relative 'individ'
-
+# TODO: Enumerable class instead of array
 class Population
-  Info = Struct.new(:individ, :x, :y)
-
   attr_reader :land, :array
 
   def initialize(land:, amount: 100)
     @land = land
     @array = culture(amount)
+  end
+
+  def each(&block)
+    array.each(&block)
   end
 
   def map(&block)
@@ -18,10 +19,9 @@ class Population
 
   def culture(amount)
     Array.new(amount) do
-      place = land.rand_field
-      land[*place] = individ = Individ.new
-
-      Info.new(individ, *place)
+      Mite.new.tap do |mite|
+        mite.move_to(land, *land.rand_field)
+      end
     end
   end
 end
