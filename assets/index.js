@@ -38,19 +38,24 @@ var data = []
 
 function buildTik(data) {
   d3.selectAll("circle").remove();
-  const circle = vis.selectAll("circles")
-    .data(data)
 
-  //.transition()
-  circle
+  vis.selectAll("circles.food")
+    .data(data.foods)
     .enter()
-    .append("circle")
-    .attr("cx", (d) => scale(d.x))
-    .attr("cy", (d) => scale(d.y))
-    .attr("fill", (d) => d3.interpolateYlGn(d.age) / 100)
-    .attr("r", 5)
+      .append("circle")
+      .attr("class", "food")
+      .attr("cx", (d) => scale(d.x))
+      .attr("cy", (d) => scale(d.y))
+      .attr("fill", "red")
+      .attr("r", 8)
 
-  circle
-    .exit()
-    .remove()
+  vis.selectAll("circles.mite")
+    .data(data.population)
+    .enter()
+      .append("circle")
+      .attr("class", "mite")
+      .attr("cx", (d) => scale(d.x))
+      .attr("cy", (d) => scale(d.y))
+      .attr("fill", (d) => d3.interpolateRdYlGn(1 - (d.age / 100)))
+      .attr("r", 5)
 }

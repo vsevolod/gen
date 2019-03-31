@@ -12,6 +12,11 @@ module Mites
 
     def grow_up(i)
       @age += i
+      @age = 1 if age < 1
+    end
+
+    def get_direction
+      [:top, :right, :bottom, :left].sample
     end
   end
 end

@@ -20,7 +20,7 @@ class Population
   def culture(amount)
     Array.new(amount) do
       Mite.new.tap do |mite|
-        mite.move_to(land, *land.rand_field)
+        mite.seed_to(land, *land.rand_field)
       end
     end
   end
