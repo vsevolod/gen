@@ -25,15 +25,18 @@ const chatChannel = cable.subscriptions.create(
 )
 
 
-const amount = 100
-const width = 1000
+const xAmount = 300
+const yAmount = 100
+const width = 3000
+const height = 1000
 
 const vis = d3.select("body")
   .append("svg")
     .attr("width", width)
-    .attr("height", width)
+    .attr("height", height)
 
-const scale = d3.scaleLinear().domain([0, amount]).range([0, width])
+const xScale = d3.scaleLinear().domain([0, xAmount]).range([0, width])
+const yScale = d3.scaleLinear().domain([0, yAmount]).range([0, height])
 var data = []
 
 function buildTik(data) {
@@ -44,18 +47,18 @@ function buildTik(data) {
     .enter()
       .append("circle")
       .attr("class", "food")
-      .attr("cx", (d) => scale(d.x))
-      .attr("cy", (d) => scale(d.y))
+      .attr("cx", (d) => xScale(d.x))
+      .attr("cy", (d) => yScale(d.y))
       .attr("fill", "red")
-      .attr("r", 8)
+      .attr("r", "4")
 
   vis.selectAll("circles.mite")
     .data(data.population)
     .enter()
       .append("circle")
       .attr("class", "mite")
-      .attr("cx", (d) => scale(d.x))
-      .attr("cy", (d) => scale(d.y))
+      .attr("cx", (d) => xScale(d.x))
+      .attr("cy", (d) => yScale(d.y))
       .attr("fill", (d) => d3.interpolateRdYlGn(1 - (d.age / 100)))
-      .attr("r", 5)
+      .attr("r", 10)
 }

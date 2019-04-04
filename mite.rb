@@ -1,9 +1,12 @@
 class Mite
   attr_accessor :x, :y
-  attr_reader :info, :land
+  attr_reader :info, :dna, :land
 
-  def initialize
+  def initialize(land)
     @info = Mites::Info.new
+    @dna = Mites::DNA.new(input_dim: land.size)
+
+    seed_to(land, *land.rand_field)
   end
 
   def seed_to(land, x, y)
@@ -16,7 +19,8 @@ class Mite
 
   def next_tik
     info.grow_up(1)
-    land.move_to(self, info.get_direction)
+    relative_row = land.relative_row(x, y)
+    land.move_to(self, dna.get_direction(relative_row))
   end
 
   def alive?
@@ -24,9 +28,12 @@ class Mite
   end
 
   def reseed_with(other_mite)
-    land[x, y] = nil
-    info.reseed_with(other_mite.info.dna)
+    dna.reseed_with!(other_mite.dna)
 
+    info.age = 1
+    info.foods = 0
+
+    land[x, y] = nil
     seed_to(land, *land.rand_field)
   end
 

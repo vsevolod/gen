@@ -16,7 +16,11 @@ class Population
   end
 
   def top_mite(except: nil)
-    max_foods = array.map{|m| m.info.foods }.max
+    max_foods = array.map do |mite|
+      next -1 if except == mite
+
+      mite.info.foods
+    end.max
 
     array.select do |mite|
       next false if except == mite
@@ -29,9 +33,7 @@ class Population
 
   def culture(amount)
     Array.new(amount) do
-      Mite.new.tap do |mite|
-        mite.seed_to(land, *land.rand_field)
-      end
+      Mite.new(land)
     end
   end
 end

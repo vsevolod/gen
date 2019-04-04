@@ -6,11 +6,11 @@ class Land
   end
 
   def []=(x, y, v)
-    area.send(:set_element, x, y, v)
+    area.send(:set_element, y, x, v)
   end
 
   def [](x, y)
-    area[x, y]
+    area[y, x]
   end
 
   # Result: [x, y]
@@ -49,5 +49,30 @@ class Land
     self[x, y] = mite
     mite.x = x
     mite.y = y
+  end
+
+  def size
+    area.row_count * area.column_count
+  end
+
+  def relative_row(x, y)
+    new_area = area.to_a.rotate(y)
+    new_area.map! do |row|
+      row.rotate(x)
+    end
+
+    row(new_area)
+  end
+
+  def row(tmp_area = nil)
+    tmp_area ||= area
+
+    tmp_area.to_a.inject{ |x,y| x + y }.map do |x|
+      case x
+      when nil then 0
+      when Mite then 0 # Ignore mites
+      when Food then 3
+      end
+    end
   end
 end

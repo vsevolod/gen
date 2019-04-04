@@ -3,6 +3,7 @@ require 'matrix'
 require 'numo/narray'
 
 require_relative 'config/environment.rb'
+require_relative 'mites/dna'
 require_relative 'mites/info'
 require_relative 'mite'
 require_relative 'food'
@@ -12,14 +13,14 @@ require_relative 'land'
 class Life
   attr_reader :land, :population, :foods
 
-  def initialize(row_count: 100, column_count: 100)
+  def initialize(row_count: 100, column_count: 300)
     @land = Land.new(row_count, column_count)
     @population = Population.new(land: land, amount: 20)
-    @foods = Array.new(20)
+    @foods = Array.new(60)
   end
 
   def call
-    10000.times do
+    while true do
       check_food
       population.each do |mite|
         if mite.alive?
@@ -30,7 +31,6 @@ class Life
       end
       LiteCable.broadcast(::Game::Channel::NAME, message: cartesian)
 
-      sleep 0.2
       print '.'
     end
   end
